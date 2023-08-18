@@ -1,15 +1,15 @@
 import axios from "@/utils/axios";
 
-import { USER_GET_URL } from "@/constants/server.url";
+import { USER_ME_GET_URL } from "@/constants/server.url";
 import { IUserData } from "@/types/IUserData";
 import { INetwortRequestResponseState } from "@/store/types/states/INetworkRequestResponseState";
 
-interface IUserDataResponse extends INetwortRequestResponseState {
-  data? : IUserData[];
+export interface IUserDataResponse extends INetwortRequestResponseState {
+  data? : IUserData;
 }
-export const UserService = async () => {
+export const UserMeService = async () => {
   try {
-    let response = await axios.get(USER_GET_URL);
+    let response = await axios.get(USER_ME_GET_URL);
     let result: IUserDataResponse = {
       status: response.status,
       message: response.statusText,
@@ -32,3 +32,5 @@ export const UserService = async () => {
     }
   }
 };
+
+

@@ -1,1 +1,1 @@
-export const API_REQUEST_TIMEOUT = 3000;
+export const API_REQUEST_TIMEOUT = 7000;

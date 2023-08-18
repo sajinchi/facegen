@@ -1,10 +1,11 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { AiOutlineEye } from "react-icons/ai";
 import { GrDocumentDownload } from "react-icons/gr";
+import { BiSkipNext, BiSkipPrevious } from "react-icons/bi";
 
 import { AppDispatch, RootState } from "@/store";
 import { InvoiceData } from "@/store/types/states/IInvoiceState";
@@ -16,16 +17,32 @@ import { UserSingle } from "@/services/user/usergetsingle.service";
 
 const InvoiceList = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const [start, setStart] = useState(0);
+  const [end,setEnd] = useState(6);
   const token = useSelector((state: RootState) => state.auth.accessToken);
   const data: InvoiceData = useSelector((state: RootState) => state.invoice);
   useEffect(() => {
-    dispatch(getinvoice(token));
+    dispatch(getinvoice());
   }, [token]);
+
+  const handlePrev = () =>{
+    if(start > 0){
+        setStart(start-6);
+        setEnd(end-6);
+    }
+}
+
+const handleNext = () =>{
+    if(start < data.data?.length!){
+        setStart(start+6);
+        setEnd(end+6);
+    }
+}
 
   const deleteInvoice = async(id: string) => {
    let res = await DeleteInvoice(id, token);
    if (res.status = 200){
-    dispatch(getinvoice(token));
+    dispatch(getinvoice());
    }
   };
 
@@ -64,7 +81,7 @@ const InvoiceList = () => {
         <tbody>
           {Boolean(data.status == StoreStatusEnum.SUCCESS) && (
             <>
-              {data.data.map((data, index) => {
+              {data.data.slice(start,end).map((data, index) => {
                 return (
                   <tr
                     key={index}
@@ -139,6 +156,10 @@ const InvoiceList = () => {
         </>
       )}
       {Boolean(data.status == StoreStatusEnum.ERROR) && <>{data.status}</>}
+      <div className="flex items-center justify-center p-6">
+        <button onClick={()=>handlePrev()} className="flex items-center justify-center rounded-md  h-9 w-28 hover:bg-slate-200">Previous <BiSkipPrevious className="text-3xl" /> </button>
+        <button onClick={()=>handleNext()} className="flex items-center justify-center rounded-md h-9 w-28 hover:bg-slate-200" ><BiSkipNext className="text-3xl" />Next</button>
+      </div>
     </div>
   );
 };

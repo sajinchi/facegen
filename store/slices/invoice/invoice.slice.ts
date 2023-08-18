@@ -2,18 +2,18 @@ import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 
 import { getInvoice } from "@/services/invoices/invoice.get.service";
 import { StoreStatusEnum } from "@/store/types/commons/StoreStatusEnum";
-import { IInvoiceData, InvoiceData } from "@/store/types/states/IInvoiceState";
+import { InvoiceData } from "@/store/types/states/IInvoiceState";
 
 const initialState:InvoiceData = {
     status: StoreStatusEnum.IDLE,
-    data:[]
+    data:[],
 };
-export const getinvoice = createAsyncThunk("invoice/invoiceGet", async(token:string, thunkApi)=> {
-    let res = await getInvoice(token);
+export const getinvoice = createAsyncThunk("invoice/invoiceGet", async(_, thunkApi)=> {
+    let res = await getInvoice();
     if (res.status != 200) {
         return thunkApi.rejectWithValue(res.message);
-      }
-    return res;
+      }      
+    return res.data;
 })
 
 const InvoiceSlice = createSlice({
@@ -26,7 +26,10 @@ const InvoiceSlice = createSlice({
         }),
         builder.addCase(getinvoice.fulfilled, (state,action)=> {
             state.status = StoreStatusEnum.SUCCESS;
-            state.data = action.payload.data;
+            state.data = action.payload!;
+        }),
+        builder.addCase(getinvoice.rejected, (state)=> {
+            state.status = StoreStatusEnum.ERROR;
         })
     },
 })

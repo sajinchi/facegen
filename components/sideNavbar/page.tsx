@@ -3,10 +3,15 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
+import { FiUsers, FiPackage } from "react-icons/fi";
+import { TbFileInvoice } from "react-icons/tb";
+import { SiProducthunt } from "react-icons/si";
+
 import { AppDispatch, RootState } from "@/store";
 import { logout } from "@/store/slices/auth/auth.slice";
 import { CLIENT_AUTH_LOGIN_URL } from "@/constants/client.url";
 import { StoreStatusEnum } from "@/store/types/commons/StoreStatusEnum";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 
 const Navbar = () => {
   const router = useRouter();
@@ -31,25 +36,33 @@ const Navbar = () => {
       </div>
       <div className="space-y-3">
       <div className=" font-Poppins500 text-base font-medium items-center text-center">
-        <div className={`flex flex-row items-center  h-71 p-6 space-x-3 w-full ${Boolean(navstate == false) && ('justify-center')}`}>
+        <button className={`flex flex-row items-center w-full h-71 p-6  hover:bg-navbarcolor1/20 space-x-3 ${Boolean(navstate == false) && ('justify-center')}`} onClick={()=>router.push('../home')}>
           <Image src="/dashboard_icon.png" height={16} width={16} alt={""}></Image>
           {Boolean(navstate == true) && (<div>Dashboard</div>)}
-        </div>
+        </button>
         <button className={`flex flex-row w-full items-center h-71 p-6  hover:bg-navbarcolor1/20 space-x-3 ${Boolean(navstate == false) && ('justify-center')}`} onClick={()=>router.push('../product/productView')}>
-          <Image src="/items_icon.png" height={11} width={17} alt={""}></Image>
+          <SiProducthunt></SiProducthunt>
           {Boolean(navstate == true) && (<div>Products</div>)}
         </button>
         <button className={`flex flex-row w-full items-center h-71 p-6  hover:bg-navbarcolor1/20 space-x-3 ${Boolean(navstate == false) && ('justify-center')}`} onClick={()=>router.push('../invoices/invoiceList')}>
-          <Image src="/items_icon.png" height={11} width={17} alt={""}></Image>
+          <TbFileInvoice className="text-xl"></TbFileInvoice>
           {Boolean(navstate == true) && (<div>Invoices</div>)}
         </button>
         <button className={`flex flex-row w-full items-center h-71 p-6  hover:bg-navbarcolor1/20 space-x-3 ${Boolean(navstate == false) && ('justify-center')}`} onClick={()=>router.push('../packages/packageList')}>
-          <Image src="/kitchen_icon.png" height={17} width={16} alt={""}></Image>
+          <FiPackage></FiPackage>
           {Boolean(navstate == true) && (<div>Packages</div>)}
         </button>
         <button className={`flex flex-row w-full items-center h-71 p-6  hover:bg-navbarcolor1/20 space-x-3 ${Boolean(navstate == false) && ('justify-center')}`} onClick={()=>router.push('../subscription/subscriptionList')}>
           <Image src="/kitchen_icon.png" height={17} width={16} alt={""}></Image>
           {Boolean(navstate == true) && (<div>Subscription</div>)}
+        </button>
+        <button className={`flex flex-row w-full items-center h-71 p-6  hover:bg-navbarcolor1/20 space-x-3 ${Boolean(navstate == false) && ('justify-center')}`} onClick={()=>router.push('../users/usersList')}>
+          <FiUsers></FiUsers>
+          {Boolean(navstate == true) && (<div>Users</div>)}
+        </button>
+        <button className={`flex flex-row w-full items-center h-71 p-6  hover:bg-navbarcolor1/20 space-x-3 ${Boolean(navstate == false) && ('justify-center')}`} onClick={()=>router.push('../cart')}>
+          <AiOutlineShoppingCart></AiOutlineShoppingCart>
+          {Boolean(navstate == true) && (<div>Cart</div>)}
         </button>
       </div>
         <div className="pb-5">

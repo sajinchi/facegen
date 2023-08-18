@@ -1,9 +1,10 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import mime from 'mime-types';
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 import { CreateProductService } from "@/services/product/product.create.service";
 import { RootState } from "@/store";
@@ -16,7 +17,7 @@ export interface ProductCreateData {
   discount_amount: number;
   inventory: number;
   description: string;
-  images:string[];
+  images:FileList;
   token:string;
 }
 export interface IImage {
@@ -27,16 +28,30 @@ export interface IImage {
 const ProductCreatePage = () => {
   const {
     register,
-    handleSubmit,
+    handleSubmit, 
     formState: { errors },
   } = useForm<ProductCreateData>({ mode: "all" });
   let router = useRouter();
   
   const token = useSelector((state:RootState) => state.auth.accessToken );
+
+  const validateFile = (fileList: FileList) => {
+    const file = fileList;
+    if (!file) {
+      return '*Please select a file.';
+    }
+    
+    const mimeType = mime.lookup(file[0]?.name);
+    if (mimeType !== 'image/jpeg') {
+      
+      return '*Please select a JPEG image file.';
+    }
+    
+    // return true;
+  };
   
   const onSubmit = async(data: ProductCreateData) => {
-    data.token = token;
-    let res = await handleFileUpload(data.images,data.token);
+    let res = await handleFileUpload(data.images);
     console.log(res);
     if( res.status == 200){
         let images:IImage[] = [];
@@ -83,6 +98,7 @@ const ProductCreatePage = () => {
             <input
               {...register("amount", {
                 required: { value: true, message: "*Amount is required." },
+                pattern: {value:/^[0-9-]/,message:"*Enter number only"}
               })}
               type="text"
               placeholder="Enter the price"
@@ -105,7 +121,8 @@ const ProductCreatePage = () => {
                   value: true,
                   message: "*Discount amount is required.",
                 },
-                max:100
+                max:100,
+                pattern: {value:/^[0-9-]/,message:"*Enter number only"}
               })}
               type="text"
               placeholder="Enter the Discount amount"
@@ -123,6 +140,7 @@ const ProductCreatePage = () => {
             <input
               {...register("inventory", {
                 required: { value: true, message: "*Inventory is required." },
+                pattern: {value:/^[0-9-]/,message:"*Enter number only"}
               })}
               type="text"
               placeholder="Enter the inventory"
@@ -153,20 +171,12 @@ const ProductCreatePage = () => {
             {errors.description?.message}
           </div>
         </div>
-        {/* <div className="flex flex-col"> */}
           <div><label className=" font-Poppins">Images</label></div>
-          <input
-            type="file"
-            multiple
-            {...register("images", {
-              required: { value: true, message: "*Image is required." },
-            })}
-          />
+          <input type="file" multiple {...register('images', { validate: validateFile })} />
           <div className=" text-red-500 italic text-sm ">
-            {/* {errors.images?.message} */}
+            {errors.images?.message}
           </div>
         </div>
-      {/* </div> */}
       <div className="flex flex-row p-9 space-x-1 justify-end">
         <Link href="./productView"><button className=" h-46 w-99 hover:bg-slate-200 hover:text-slate-600 rounded-md">
           Cancel

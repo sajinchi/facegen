@@ -1,9 +1,10 @@
 "use client";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { AiFillEdit, AiOutlineEye } from "react-icons/ai";
+import { BiSkipNext, BiSkipPrevious } from "react-icons/bi";
 
 import { AppDispatch, RootState } from "@/store";
 import { IProductState } from "@/types/IProductState";
@@ -13,11 +14,29 @@ import { DeleteProduct } from "@/services/product/product.delete.service";
 
 const ProductViewPage = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const [start, setStart] = useState(0);
+  const [end,setEnd] = useState(7);
   const productSlice: IProductState = useSelector((state: RootState) => state.getproduct);
+  
+
   useEffect(() => {
     dispatch(getproduct());
   }, []);
   
+
+  const handlePrev = () =>{
+    if(start > 0){
+        setStart(start-7);
+        setEnd(end-7);
+    }
+}
+
+const handleNext = () =>{
+    if(start < productSlice.data?.length!){
+        setStart(start+7);
+        setEnd(end+7);
+    }
+}
 
 const deleteProduct = async (data: string) => {
     let res = await DeleteProduct(data);
@@ -42,7 +61,7 @@ const deleteProduct = async (data: string) => {
         <tbody>
           {Boolean(productSlice.status == StoreStatusEnum.SUCCESS) && (
             <>
-              {productSlice.data.map((pro, index) => {
+              {productSlice.data.slice(start,end).map((pro, index) => {
                 return (
                   <tr
                     key={index}
@@ -123,6 +142,11 @@ const deleteProduct = async (data: string) => {
       {Boolean(productSlice.status == StoreStatusEnum.ERROR) && (
         <div className="items-center text-center">Error Fetching Data</div>
       )}
+      <div className="flex items-center justify-center p-6">
+        <button onClick={()=>handlePrev()} className="flex items-center justify-center rounded-md  h-9 w-28 hover:bg-slate-200">Previous <BiSkipPrevious className="text-3xl" /> </button>
+        {/* <span>{currentPage} of {totalPages}</span> */}
+        <button onClick={()=>handleNext()} className="flex items-center justify-center rounded-md h-9 w-28 hover:bg-slate-200" ><BiSkipNext className="text-3xl" />Next</button>
+      </div>
     </div>
   );
 };

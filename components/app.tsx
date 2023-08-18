@@ -12,7 +12,7 @@ const App = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (auth.status == StoreStatusEnum.SUCCESS) {
-      dispatch(userdata(auth.accessToken));
+      dispatch(userdata());
     }
   }, [auth]);
   return <>{children}</>;

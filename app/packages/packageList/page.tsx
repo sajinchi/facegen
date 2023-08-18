@@ -4,6 +4,7 @@ import Topbar from '@/components/topbar/page'
 import PackageListPage from '@/components/packages/PackageListPage';
 import Authorization from '@/hocs/withAuth.hoc'
 import React from 'react'
+import Link from 'next/link';
 
 const PackageList = () => {
   return (
@@ -18,7 +19,10 @@ const PackageList = () => {
             <div className="flex flex-row items-center h-20 p-6 space-x-5">
               <div className="font-Poppins text-xl font-extrabold">
                 Packages
-              </div>              
+              </div>
+              <div className="grow items-center text-right">
+                <Link href="./packageCreate"><button className="bg-orange1 text-white h-46 w-148 rounded-5px">Add Package</button></Link>
+              </div>
             </div>
             <PackageListPage/>
           </div>

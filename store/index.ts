@@ -9,6 +9,7 @@ import getSubscriptionReducer from "./slices/subscription/subscriptionGet.slice"
 import resetpasswordReducer from "./slices/auth/resetpassword.slice";
 import forgotpasswordReducer from "./slices/auth/forgotPassword.slice";
 import createNewAccountReducer from "./slices/auth/createNewAccount.slice";
+import cartReducer from "./slices/cart/cart.slice";
 
 
 const allReducers = combineReducers({
@@ -19,8 +20,9 @@ const allReducers = combineReducers({
   package: PackageReducer,
   getproduct: getproductReducer,
   getsubscription: getSubscriptionReducer,
-  userdata: userdataReducer,
+  myuserdata: userdataReducer,
   invoice: invoiceReducer,
+  cart: cartReducer,
 })
 
   

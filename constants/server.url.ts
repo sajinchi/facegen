@@ -26,9 +26,13 @@ export const PRODUCT_UPDATE_URL = '/products/';
 
 //user urls
 
-export const USER_GET_URL = '/users/me/';
+export const USER_ME_GET_URL = '/users/me/';
 
 export const USER_GETSINGLE_URL = '/users/';
+
+export const USER_GET_URL = '/users/';
+
+export const USER_UPDATE_ME_URL = '/users/me/';
 
 // invoices urls
 
@@ -53,4 +57,7 @@ export const SUBSCRIPTION_CREATE_URL = '/subscription/';
 
 
 //payment urls
-export const PAYMENT_GETSINGLE_URL = '/paymentTypes/';
+export const PAYMENT_GETSINGLE_URL = '/paymentTypes';
+
+//purchase urls
+export const PURCHASE_URL = '/purchase/';

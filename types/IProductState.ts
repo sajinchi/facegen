@@ -7,7 +7,11 @@ export interface IProduct {
     discount_amount: number;
     inventory: number;
     description: string;
-    images:string;
+    images:image[];
+}
+
+interface image {
+    image_url : string;
 }
 
 export interface IProductState {

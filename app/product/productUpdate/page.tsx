@@ -17,7 +17,7 @@ const ProductUpdate = () => {
             <div className=" w-1166 h-auto shadow-md m-auto mt-5 bg-white">
               <div className="flex flex-row items-center h-20 p-6">
                 <div className=" font-Poppins text-xl pl-43 pt-42 pb-23">
-                  Create Product
+                  Update Product
                 </div>
               </div>
               <ProductUpdatePage></ProductUpdatePage>

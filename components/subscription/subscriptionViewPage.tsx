@@ -1,13 +1,13 @@
 "use client";
-import { AppDispatch, RootState } from "@/store";
-import { getsubscription } from "@/store/slices/subscription/subscriptionGet.slice";
-import { StoreStatusEnum } from "@/store/types/commons/StoreStatusEnum";
-import { ISubscriptionState } from "@/types/ISubscriptionState";
 import Link from "next/link";
 import React, { useEffect } from "react";
-import { AiFillEdit, AiOutlineEye } from "react-icons/ai";
-import { MdOutlineDeleteOutline } from "react-icons/md";
+import { AiOutlineEye } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
+
+import { AppDispatch, RootState } from "@/store";
+import { ISubscriptionState } from "@/types/ISubscriptionState";
+import { StoreStatusEnum } from "@/store/types/commons/StoreStatusEnum";
+import { getsubscription } from "@/store/slices/subscription/subscriptionGet.slice";
 
 const SubscriptionViewPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,7 +16,6 @@ const SubscriptionViewPage = () => {
     dispatch(getsubscription());
   }, []);
   let subscription:ISubscriptionState = useSelector((state:RootState) => state.getsubscription);
-  console.log(subscription);
   return (
     <div className=" items-center">
     <table className="align-middle text-left w-full ">

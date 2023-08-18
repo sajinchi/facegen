@@ -2,10 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form'
-import { useSelector } from 'react-redux';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { RootState } from '@/store';
 import { IImage } from './ProductCreatePage';
 import { IProduct } from '@/types/IProductState';
 import { UpdateProductService } from '@/services/product/product.update.service';
@@ -19,7 +17,7 @@ export interface ProductUpdateData {
     discount_amount: number;
     inventory: number;
     description: string;
-    images:string[];
+    images:FileList;
     token:string;
   }
 
@@ -28,7 +26,7 @@ const ProductUpdatePage = () => {
     const [product, setProduct] = useState<IProduct>();
     const{register, handleSubmit, formState:{errors} } = useForm<ProductUpdateData>({mode:"all"});
 
-    const token = useSelector((state:RootState)=> state.auth.accessToken);
+    // const token = useSelector((state:RootState)=> state.auth.accessToken);
     const searchParams = useSearchParams();
     const id = searchParams.get("id");
    
@@ -46,7 +44,7 @@ const ProductUpdatePage = () => {
     
         
     const onSubmit = async(updatedata:ProductUpdateData) => {
-        let res = await handleFileUpload(updatedata.images,token);
+        let res = await handleFileUpload(updatedata.images);
         if( res.status == 200){
             let images:IImage[] = [];
             res.data.detial.forEach((image: string) => {
@@ -167,7 +165,7 @@ const ProductUpdatePage = () => {
         </div>
       </div>
       {/* <div className="flex flex-col"> */}
-        <div><label className=" font-Poppins">Images</label></div>
+        {/* <div><label className=" font-Poppins">Images</label></div>
         <input
           type="file"
           multiple
@@ -175,7 +173,7 @@ const ProductUpdatePage = () => {
           defaultValue={product?.images}
         />
         <div className=" text-red-500 italic text-sm ">
-        </div>
+        </div> */}
       </div>
     {/* </div> */}
     <div className="flex flex-row p-9 space-x-1 justify-end">
